@@ -5,15 +5,15 @@ const app = require('../app')
 const api = supertest(app)
 const Blog = require('../models/blog')
 
-beforeEach(async () => {
-  await Blog.deleteMany({})
-  let blogObject = new Blog(helper.initialBlogs[0])
-  await blogObject.save()
-  blogObject = new Blog(helper.initialBlogs[1])
-  await blogObject.save()
-})
-
 describe('When there is initially some blogs saved', () => {
+  beforeEach(async () => {
+    await Blog.deleteMany({})
+    let blogObject = new Blog(helper.initialBlogs[0])
+    await blogObject.save()
+    blogObject = new Blog(helper.initialBlogs[1])
+    await blogObject.save()
+  })
+
   describe('GET requests', () => {
     test('There is correct amount of blogs returned', async () => {
       const response = await api.get('/api/blogs')
@@ -142,8 +142,4 @@ describe('When there is initially some blogs saved', () => {
       expect(contents).toContain(100)
     })
   })
-})
-
-afterAll(async () => {
-  await mongoose.connection.close()
 })

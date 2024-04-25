@@ -9,8 +9,10 @@ const blogSchema = new mongoose.Schema({
 
 blogSchema.set('toJSON', {
     transform: (document, returnedObject) => {
+      returnedObject.id = returnedObject._id.toString()
       delete returnedObject._id
       delete returnedObject.__v
+      returnedObject.likes = returnedObject.likes || 0
     }
 })
 
